@@ -6,16 +6,20 @@ import VisibilityOff from '/icons/visibility-off.svg';
 import VisibilityOn from '/icons/visibility-on.svg';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  error?: boolean;
+  errorMessage?: string;
   className?: string;
 }
 
 /**
  * input 공통 컴포넌트
  * @param type input type
+ * @param error 값이 true일 경우 error 스타일 활성화 아니라면 false (기본값 false 설정 필요)
+ * @param errorMessage input 밑에 보여줄 에러 메세지
  * @param className input 커스텀 className
  */
 export default forwardRef(function Input(
-  { type, className, ...rest }: InputProps,
+  { type, error, errorMessage, className, ...rest }: InputProps,
   ref: React.LegacyRef<HTMLInputElement>,
 ) {
   const [passwordToggle, setPasswordToggle] = useState(false);
@@ -54,6 +58,11 @@ export default forwardRef(function Input(
           </button>
         )}
       </div>
+      {error && errorMessage && (
+        <span className='mt-2 block pl-2 text-xs leading-[1.3] text-red-500'>
+          {errorMessage}
+        </span>
+      )}
     </div>
   );
 });
