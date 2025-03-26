@@ -1,5 +1,7 @@
+import Input from '@/components/input/Input';
+
 const HomePage = () => {
-  return <div>메인 홈 페이지</div>;
+  return <Input />;
 };
 
 export default HomePage;
