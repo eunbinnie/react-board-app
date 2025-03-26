@@ -19,8 +19,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  * @param className input 커스텀 className
  */
 export default forwardRef(function Input(
-  { type, error, errorMessage, className, ...rest }: InputProps,
-  ref: React.LegacyRef<HTMLInputElement>,
+  { type, id, error = false, errorMessage, className, ...rest }: InputProps,
+  ref: React.ForwardedRef<HTMLInputElement>,
 ) {
   const [passwordToggle, setPasswordToggle] = useState(false);
   const isPassword = type === 'password';
@@ -35,6 +35,7 @@ export default forwardRef(function Input(
     <div className='grid'>
       <div className='relative'>
         <input
+          id={id}
           type={newType}
           className={cn(
             'w-full rounded border border-solid border-gray-500 px-5 py-4 leading-[1.6] text-black outline-none placeholder:text-gray-500',
