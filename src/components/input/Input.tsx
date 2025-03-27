@@ -70,7 +70,7 @@ export default forwardRef(function Input(
         )}
       </div>
       {error && errorMessage && (
-        <span className='text-red-500 mt-2 block pl-2 text-xs leading-[1.3]'>
+        <span className='mt-1 block text-xs font-medium leading-[1.7] text-red'>
           {errorMessage}
         </span>
       )}
