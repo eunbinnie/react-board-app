@@ -2,19 +2,19 @@ import { useId } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
+import EmailInput from '@/components/auth/EmailInput';
 import Button from '@/components/button/Button';
 import Input from '@/components/input/Input';
 import InputWrapper from '@/components/input/InputWrapper';
 
 import AuthLayout from './AuthLayout';
 
-type SignUpForm = {
+export type SignUpForm = {
   email: string;
   password: string;
 };
 
 const SignUpPage = () => {
-  const emailId = useId();
   const passwordId = useId();
   const {
     register,
@@ -36,25 +36,7 @@ const SignUpPage = () => {
         <div className='mt-8'>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='grid gap-4'>
-              <InputWrapper
-                label='이메일'
-                htmlFor={emailId}
-                error={!!errors.email}
-                errorMessage={errors.email?.message}
-              >
-                <Input
-                  type='email'
-                  id={emailId}
-                  placeholder='이메일을 입력해 주세요'
-                  {...register('email', {
-                    required: '이메일을 입력해 주세요',
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: '이메일 형식으로 입력해 주세요',
-                    },
-                  })}
-                />
-              </InputWrapper>
+              <EmailInput register={register} errors={errors} name='email' />
               <InputWrapper
                 label='비밀번호'
                 htmlFor={passwordId}
