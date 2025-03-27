@@ -19,16 +19,24 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  * @param className input 커스텀 className
  */
 export default forwardRef(function Input(
-  { type, id, error = false, errorMessage, className, ...rest }: InputProps,
+  {
+    type,
+    id,
+    placeholder,
+    error = false,
+    errorMessage,
+    className,
+    ...rest
+  }: InputProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) {
-  const [passwordToggle, setPasswordToggle] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
-  const newType = passwordToggle && isPassword ? 'text' : type;
+  const newType = showPassword && isPassword ? 'text' : type;
 
   // 비밀번호 가시성 아이콘 토글
   const handlePasswordToggle = useCallback(() => {
-    setPasswordToggle((prev) => !prev);
+    setShowPassword((prev) => !prev);
   }, []);
 
   return (
@@ -37,9 +45,11 @@ export default forwardRef(function Input(
         <input
           id={id}
           type={newType}
+          placeholder={placeholder}
           className={cn(
-            'w-full rounded border border-solid border-gray-500 px-5 py-4 leading-[1.6] text-black outline-none placeholder:text-gray-500',
-            isPassword ? 'pr-[54px]' : 'pr-5',
+            'h-9 w-full rounded-md border border-gray-500 px-3 py-1 text-sm leading-[1.6] text-black outline-none placeholder:text-gray-500',
+            'focus-visible:ring-1 focus-visible:ring-gray-300',
+            isPassword ? 'pr-[42px]' : 'pr-3',
             className,
           )}
           ref={ref}
@@ -48,13 +58,13 @@ export default forwardRef(function Input(
         {isPassword && (
           <button
             type='button'
-            className='absolute right-5 top-1/2 -translate-y-1/2'
+            className='absolute right-3 top-1/2 -translate-y-1/2'
             onClick={handlePasswordToggle}
-            aria-label={passwordToggle ? '비밀번호 숨기기' : '비밀번호 보기'}
+            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
           >
             <img
-              src={passwordToggle ? VisibilityOn : VisibilityOff}
-              alt={passwordToggle ? '비밀번호 숨기기' : '비밀번호 보기'}
+              src={showPassword ? VisibilityOn : VisibilityOff}
+              alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             />
           </button>
         )}
