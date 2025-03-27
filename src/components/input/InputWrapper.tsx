@@ -37,14 +37,14 @@ const InputWrapper = ({
       {label && (
         <label
           htmlFor={htmlFor}
-          className='text-xs font-medium leading-none text-gray-500'
+          className='text-sm font-medium leading-none text-gray-500'
         >
           {label}
         </label>
       )}
       {children}
       {error && errorMessage && (
-        <span className='mt-1 block text-xs font-medium leading-[1.7] text-red'>
+        <span className='block text-xs font-medium leading-none text-red'>
           {errorMessage}
         </span>
       )}
