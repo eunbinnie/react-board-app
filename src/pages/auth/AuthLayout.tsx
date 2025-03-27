@@ -5,7 +5,7 @@ interface IAuthLayoutProps extends PropsWithChildren {}
 
 const AuthLayout = ({ children }: IAuthLayoutProps) => {
   return (
-    <div className='flex h-dvh'>
+    <div className='flex min-h-dvh'>
       <div className='hidden bg-slate-950 p-10 lg:block lg:flex-1'>
         <h1>
           <Link to='/' className='text-2xl font-bold text-white'>
