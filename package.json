@@ -14,7 +14,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "lint:fix": "eslint src --ext ts,tsx --fix",
-    "preview": "vite preview"
+    "start": "vite preview"
   },
   "dependencies": {
     "autoprefixer": "^10.4.21",
