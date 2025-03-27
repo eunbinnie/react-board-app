@@ -17,6 +17,7 @@
     "start": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.3",
     "autoprefixer": "^10.4.21",
     "lottie-react": "^2.4.1",
     "postcss": "^8.5.3",
