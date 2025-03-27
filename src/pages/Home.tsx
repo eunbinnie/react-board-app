@@ -5,7 +5,9 @@ const HomePage = () => {
   return (
     <>
       <Input type='password' error={true} errorMessage='에러 메세지' />
-      <Button disabled={false}>버튼</Button>
+      <Button disabled={false} isLoading>
+        버튼
+      </Button>
     </>
   );
 };
