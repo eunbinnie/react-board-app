@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+
+import { useSignUpMutation } from '@/services/authApi';
+import type { AuthError } from '@supabase/supabase-js';
 
 import type { SignUpForm } from '@/types/auth.types';
 
@@ -14,14 +18,31 @@ const SignUpPage = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm<SignUpForm>({ mode: 'onChange' });
+  const [signUp, { isLoading, error }] = useSignUpMutation();
 
-  const onSubmit: SubmitHandler<SignUpForm> = (data) => {
-    /**
-     * @TODO 회원가입 로직 구현
-     */
-    console.log(data);
+  useEffect(() => {
+    if (error) {
+      console.error('회원가입 실패 데이터', error);
+    }
+  }, [error]);
+
+  const onSubmit: SubmitHandler<SignUpForm> = async (formData) => {
+    try {
+      const { data, error } = await signUp(formData);
+
+      if (error) {
+        console.error('회원가입 실패', error);
+        setError('email', { message: (error as AuthError).message });
+
+        return;
+      }
+      console.log('회원가입 성공', data);
+    } catch (error) {
+      console.error('회원가입 실패', error);
+    }
   };
 
   return (
@@ -38,7 +59,12 @@ const SignUpPage = () => {
                 name='password'
               />
             </div>
-            <Button type='submit' disabled={!isValid} className='mt-8'>
+            <Button
+              type='submit'
+              disabled={!isValid || !!error}
+              isLoading={isLoading}
+              className='mt-8'
+            >
               회원가입
             </Button>
           </form>
