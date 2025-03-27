@@ -1,5 +1,6 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import type { SignUpForm } from '@/types/auth.types';
 
@@ -41,6 +42,15 @@ const SignUpPage = () => {
               회원가입
             </Button>
           </form>
+        </div>
+        <div className='mx-auto mt-3 text-sm text-gray-500'>
+          이미 계정이 있으신가요?{' '}
+          <Link
+            to={'/login'}
+            className='font-medium underline underline-offset-2'
+          >
+            로그인하기
+          </Link>
         </div>
       </div>
     </AuthLayout>
