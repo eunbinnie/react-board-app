@@ -60,7 +60,7 @@ export default forwardRef(function Input(
         )}
       </div>
       {error && errorMessage && (
-        <span className='mt-2 block pl-2 text-xs leading-[1.3] text-red-500'>
+        <span className='text-red-500 mt-2 block pl-2 text-xs leading-[1.3]'>
           {errorMessage}
         </span>
       )}
