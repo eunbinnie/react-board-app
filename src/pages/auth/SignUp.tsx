@@ -1,16 +1,13 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
+import type { SignUpForm } from '@/types/auth.types';
+
 import EmailInput from '@/components/auth/EmailInput';
 import PasswordInput from '@/components/auth/PasswordInput';
 import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
-
-export type SignUpForm = {
-  email: string;
-  password: string;
-};
 
 const SignUpPage = () => {
   const {

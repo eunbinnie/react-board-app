@@ -1,20 +1,15 @@
 import { useId } from 'react';
-import type { FieldErrors, Path, UseFormRegister } from 'react-hook-form';
+
+import type { AuthFormInputProps } from '@/types/auth.types';
 
 import Input from '../input/Input';
 import InputWrapper from '../input/InputWrapper';
-
-interface PasswordInputProps<T extends Record<string, any>> {
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
-  name: Path<T>;
-}
 
 const PasswordInput = <T extends Record<string, any>>({
   register,
   errors,
   name,
-}: PasswordInputProps<T>) => {
+}: AuthFormInputProps<T>) => {
   const id = useId();
 
   return (

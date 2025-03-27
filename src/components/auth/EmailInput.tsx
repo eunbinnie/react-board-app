@@ -1,20 +1,15 @@
 import { useId } from 'react';
-import type { FieldErrors, Path, UseFormRegister } from 'react-hook-form';
+
+import type { AuthFormInputProps } from '@/types/auth.types';
 
 import Input from '../input/Input';
 import InputWrapper from '../input/InputWrapper';
-
-interface EmailInputProps<T extends Record<string, any>> {
-  register: UseFormRegister<T>;
-  errors: FieldErrors<T>;
-  name: Path<T>;
-}
 
 const EmailInput = <T extends Record<string, any>>({
   register,
   errors,
   name,
-}: EmailInputProps<T>) => {
+}: AuthFormInputProps<T>) => {
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const id = useId();
 
