@@ -2,7 +2,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import type { SignUpForm } from '@/types/auth.types';
+import type { LoginForm } from '@/types/auth.types';
 
 import EmailInput from '@/components/auth/EmailInput';
 import PasswordInput from '@/components/auth/PasswordInput';
@@ -10,14 +10,14 @@ import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<SignUpForm>({ mode: 'onChange' });
+  } = useForm<LoginForm>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<SignUpForm> = (data) => {
+  const onSubmit: SubmitHandler<LoginForm> = (data) => {
     /**
      * @TODO 회원가입 로직 구현
      */
@@ -27,7 +27,7 @@ const SignUpPage = () => {
   return (
     <AuthLayout>
       <div className='grid'>
-        <h2 className='text-2xl font-bold'>회원가입</h2>
+        <h2 className='text-2xl font-bold'>로그인</h2>
         <div className='mt-8'>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='grid gap-4'>
@@ -39,17 +39,17 @@ const SignUpPage = () => {
               />
             </div>
             <Button type='submit' disabled={!isValid} className='mt-8'>
-              회원가입
+              로그인
             </Button>
           </form>
         </div>
         <div className='mx-auto mt-3 text-sm text-gray-500'>
-          이미 계정이 있으신가요?{' '}
+          아직 계정이 없으신가요?{' '}
           <Link
-            to={'/login'}
+            to={'/signup'}
             className='font-medium underline underline-offset-2'
           >
-            로그인하기
+            회원가입하기
           </Link>
         </div>
       </div>
@@ -57,4 +57,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;
