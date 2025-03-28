@@ -54,9 +54,7 @@ const SignUpPage = () => {
 
       if (data.session) {
         toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
-        setTimeout(() => {
-          navigate('/posts');
-        }, 1000);
+        navigate('/posts');
       } else if (error) {
         handleSignupError(error);
       }
