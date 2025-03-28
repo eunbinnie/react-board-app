@@ -1,6 +1,9 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { useLoginMutation } from '@/services/authApi';
 
 import type { LoginForm } from '@/types/auth.types';
 
@@ -16,12 +19,33 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginForm>({ mode: 'onChange' });
+  const [login, { isLoading }] = useLoginMutation();
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
-    /**
-     * @TODO 회원가입 로직 구현
-     */
-    console.log(data);
+  // 로그인 실패 처리
+  const handleLoginError = (error: unknown) => {
+    console.error('로그인 실패:', error);
+
+    if (error instanceof Error) {
+      toast.error(error.message, TOAST_OPTION);
+    } else {
+      toast.error('로그인 중 오류가 발생했습니다.', TOAST_OPTION);
+    }
+  };
+
+  // 로그인 처리
+  const onSubmit: SubmitHandler<LoginForm> = async (formData) => {
+    try {
+      const { data, error } = await login(formData);
+
+      if (data.session && data.user) {
+        navigate('/posts');
+      } else if (error) {
+        handleLoginError(error);
+      }
+    } catch (error) {
+      handleLoginError(error);
+    }
   };
 
   return (
