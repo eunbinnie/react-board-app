@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { TOAST_OPTION } from '@/constants/toast.constants';
 import { useLoginMutation } from '@/services/authApi';
 
 import type { LoginForm } from '@/types/auth.types';
@@ -62,7 +63,12 @@ const LoginPage = () => {
                 name='password'
               />
             </div>
-            <Button type='submit' disabled={!isValid} className='mt-8'>
+            <Button
+              type='submit'
+              disabled={!isValid}
+              isLoading={isLoading}
+              className='mt-8'
+            >
               로그인
             </Button>
           </form>

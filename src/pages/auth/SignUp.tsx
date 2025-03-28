@@ -1,9 +1,9 @@
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import type { ToastOptions } from 'react-toastify';
-import { Slide, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
+import { TOAST_OPTION } from '@/constants/toast.constants';
 import { useSignUpMutation } from '@/services/authApi';
 
 import type { SignUpForm } from '@/types/auth.types';
@@ -13,19 +13,6 @@ import PasswordInput from '@/components/auth/PasswordInput';
 import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
-
-// 토스트 메시지 옵션
-const TOAST_OPTION: ToastOptions = {
-  position: 'top-right',
-  autoClose: 3000,
-  hideProgressBar: false,
-  closeOnClick: false,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: 'colored',
-  transition: Slide,
-};
 
 const SignUpPage = () => {
   const {
