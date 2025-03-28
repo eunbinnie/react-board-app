@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,7 +5,6 @@ import type { ToastOptions } from 'react-toastify';
 import { Slide, toast } from 'react-toastify';
 
 import { useSignUpMutation } from '@/services/authApi';
-import type { AuthError } from '@supabase/supabase-js';
 
 import type { SignUpForm } from '@/types/auth.types';
 
@@ -16,6 +14,7 @@ import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
 
+// 토스트 메시지 옵션
 const TOAST_OPTION: ToastOptions = {
   position: 'top-right',
   autoClose: 3000,
@@ -34,33 +33,35 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<SignUpForm>({ mode: 'onChange' });
-  const [signUp, { isLoading, error }] = useSignUpMutation();
+  const [signUp, { isLoading }] = useSignUpMutation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (error) {
-      console.error('회원가입 실패 데이터', error);
-    }
-  }, [error]);
+  // 회원가입 실패 처리
+  const handleSignupError = (error: unknown) => {
+    console.error('회원가입 실패:', error);
 
+    if (error instanceof Error) {
+      toast.error(error.message, TOAST_OPTION);
+    } else {
+      toast.error('회원가입 중 오류가 발생했습니다.', TOAST_OPTION);
+    }
+  };
+
+  // 회원가입 처리
   const onSubmit: SubmitHandler<SignUpForm> = async (formData) => {
     try {
       const { data, error } = await signUp(formData);
 
-      if (error) {
-        console.error('회원가입 실패:', error);
-        toast.error((error as AuthError).message, TOAST_OPTION);
-
-        return;
+      if (data.session) {
+        toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
+        setTimeout(() => {
+          navigate('/posts');
+        }, 1000);
+      } else if (error) {
+        handleSignupError(error);
       }
-
-      toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
-      navigate('/');
-
-      return;
     } catch (error) {
-      console.error('회원가입 실패:', error);
-      toast.error((error as AuthError).message, TOAST_OPTION);
+      handleSignupError(error);
     }
   };
 
