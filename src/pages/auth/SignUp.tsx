@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import type { ToastOptions } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 
 import { useSignUpMutation } from '@/services/authApi';
 import type { AuthError } from '@supabase/supabase-js';
@@ -14,14 +16,26 @@ import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
 
+const TOAST_OPTION: ToastOptions = {
+  position: 'top-right',
+  autoClose: 3000,
+  hideProgressBar: false,
+  closeOnClick: false,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'colored',
+  transition: Slide,
+};
+
 const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid },
   } = useForm<SignUpForm>({ mode: 'onChange' });
   const [signUp, { isLoading, error }] = useSignUpMutation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
@@ -34,14 +48,19 @@ const SignUpPage = () => {
       const { data, error } = await signUp(formData);
 
       if (error) {
-        console.error('회원가입 실패', error);
-        setError('email', { message: (error as AuthError).message });
+        console.error('회원가입 실패:', error);
+        toast.error((error as AuthError).message, TOAST_OPTION);
 
         return;
       }
-      console.log('회원가입 성공', data);
+
+      toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
+      navigate('/');
+
+      return;
     } catch (error) {
-      console.error('회원가입 실패', error);
+      console.error('회원가입 실패:', error);
+      toast.error((error as AuthError).message, TOAST_OPTION);
     }
   };
 
@@ -61,7 +80,7 @@ const SignUpPage = () => {
             </div>
             <Button
               type='submit'
-              disabled={!isValid || !!error}
+              disabled={!isValid}
               isLoading={isLoading}
               className='mt-8'
             >
