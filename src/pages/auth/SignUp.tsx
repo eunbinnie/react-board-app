@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import type { ToastOptions } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 
 import { useSignUpMutation } from '@/services/authApi';
-import type { AuthError } from '@supabase/supabase-js';
 
 import type { SignUpForm } from '@/types/auth.types';
 
@@ -14,34 +14,52 @@ import Button from '@/components/button/Button';
 
 import AuthLayout from './AuthLayout';
 
+// 토스트 메시지 옵션
+const TOAST_OPTION: ToastOptions = {
+  position: 'top-right',
+  autoClose: 3000,
+  hideProgressBar: false,
+  closeOnClick: false,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: 'colored',
+  transition: Slide,
+};
+
 const SignUpPage = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid },
   } = useForm<SignUpForm>({ mode: 'onChange' });
-  const [signUp, { isLoading, error }] = useSignUpMutation();
+  const [signUp, { isLoading }] = useSignUpMutation();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (error) {
-      console.error('회원가입 실패 데이터', error);
+  // 회원가입 실패 처리
+  const handleSignupError = (error: unknown) => {
+    console.error('회원가입 실패:', error);
+
+    if (error instanceof Error) {
+      toast.error(error.message, TOAST_OPTION);
+    } else {
+      toast.error('회원가입 중 오류가 발생했습니다.', TOAST_OPTION);
     }
-  }, [error]);
+  };
 
+  // 회원가입 처리
   const onSubmit: SubmitHandler<SignUpForm> = async (formData) => {
     try {
       const { data, error } = await signUp(formData);
 
-      if (error) {
-        console.error('회원가입 실패', error);
-        setError('email', { message: (error as AuthError).message });
-
-        return;
+      if (data.session) {
+        toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
+        navigate('/posts');
+      } else if (error) {
+        handleSignupError(error);
       }
-      console.log('회원가입 성공', data);
     } catch (error) {
-      console.error('회원가입 실패', error);
+      handleSignupError(error);
     }
   };
 
@@ -61,7 +79,7 @@ const SignUpPage = () => {
             </div>
             <Button
               type='submit'
-              disabled={!isValid || !!error}
+              disabled={!isValid}
               isLoading={isLoading}
               className='mt-8'
             >
