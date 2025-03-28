@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { LOGIN_ERROR_MESSAGE } from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
 import { useLoginMutation } from '@/services/authApi';
 
@@ -25,24 +26,25 @@ const LoginPage = () => {
 
   // 로그인 실패 처리
   const handleLoginError = (error: unknown) => {
-    console.error('로그인 실패:', error);
+    const errorMessage =
+      typeof error === 'object' &&
+      error !== null &&
+      'message' in error &&
+      typeof (error as any).message === 'string'
+        ? LOGIN_ERROR_MESSAGE[(error as any).message] || (error as any).message
+        : '로그인 중 오류가 발생했습니다.';
 
-    if (error instanceof Error) {
-      toast.error(error.message, TOAST_OPTION);
-    } else {
-      toast.error('로그인 중 오류가 발생했습니다.', TOAST_OPTION);
-    }
+    toast.error(errorMessage, TOAST_OPTION);
+    console.error('로그인 실패:', error);
   };
 
   // 로그인 처리
   const onSubmit: SubmitHandler<LoginForm> = async (formData) => {
     try {
-      const { data, error } = await login(formData);
+      const { session, user } = await login(formData).unwrap();
 
-      if (data.session && data.user) {
+      if (session && user) {
         navigate('/posts');
-      } else if (error) {
-        handleLoginError(error);
       }
     } catch (error) {
       handleLoginError(error);

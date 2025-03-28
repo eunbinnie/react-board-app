@@ -12,7 +12,14 @@ export const authApi = createApi({
     signUp: builder.mutation<any, SignUpForm>({
       async queryFn({ email, password }) {
         const { data, error } = await supabase.auth.signUp({ email, password });
-        if (error) return { error };
+        if (error) {
+          return {
+            error: {
+              status: error.status || 500,
+              message: error.message,
+            },
+          };
+        }
 
         return { data };
       },
@@ -24,7 +31,14 @@ export const authApi = createApi({
           password,
         });
 
-        if (error) return { error };
+        if (error) {
+          return {
+            error: {
+              status: error.status || 500,
+              message: error.message,
+            },
+          };
+        }
 
         return { data };
       },
