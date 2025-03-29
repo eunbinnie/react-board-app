@@ -3,7 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { LOGIN_ERROR_MESSAGE } from '@/constants/auth.constants';
+import {
+  LOGIN_ERROR_MESSAGE,
+  REFRESH_TOKEN_EXPIRES_IN,
+} from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
 import useAuthCookies from '@/hooks/useAuthCookies';
 import { useLoginMutation } from '@/services/authApi';
@@ -49,7 +52,11 @@ const LoginPage = () => {
 
       if (session && user) {
         setCookies('access_token', session.access_token, session.expires_in);
-        setCookies('refresh_token', session.refresh_token);
+        setCookies(
+          'refresh_token',
+          session.refresh_token,
+          REFRESH_TOKEN_EXPIRES_IN,
+        );
         navigate('/posts');
       }
     } catch (error) {
