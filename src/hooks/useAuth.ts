@@ -1,18 +1,22 @@
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/auth.constants';
+import { setAuthUser } from '@/store/authSlice';
 
 import supabase from '@/utils/supabase';
 
+import type { User } from '@/types/user.types';
+
 export default function useAuth() {
+  const dispatch = useDispatch();
   const [cookies] = useCookies([ACCESS_TOKEN, REFRESH_TOKEN]);
 
   /**
    * 쿠키에서 토큰 꺼내서 supabase 세션 복원
    * - supabase는 브라우저 메모리만 보고 있고, 쿠키는 직접 확인 안 함
    */
-
   const useAuthSession = () => {
     useEffect(() => {
       const restoreSession = async () => {
@@ -35,5 +39,10 @@ export default function useAuth() {
     }, []);
   };
 
-  return { useAuthSession };
+  // user 정보 redux에 저장
+  const saveUserToStore = (user: User) => {
+    dispatch(setAuthUser(user));
+  };
+
+  return { useAuthSession, saveUserToStore };
 }
