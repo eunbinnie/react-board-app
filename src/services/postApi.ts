@@ -13,7 +13,10 @@ export const postApi = createApi({
         body: postData,
       }),
     }),
+    getPosts: builder.query({
+      query: () => '/posts',
+    }),
   }),
 });
 
-export const { useCreatePostMutation } = postApi;
+export const { useCreatePostMutation, useGetPostsQuery } = postApi;
