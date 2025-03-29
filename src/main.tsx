@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
+import App from './App.tsx';
 import LoginPage from './pages/auth/Login.tsx';
 import SignUpPage from './pages/auth/SignUp.tsx';
 import HomePage from './pages/Home.tsx';
@@ -14,7 +15,8 @@ import { store } from './store/store.ts';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
+    element: <App />,
+    children: [{ index: true, element: <HomePage /> }],
   },
   {
     path: '/signup',
