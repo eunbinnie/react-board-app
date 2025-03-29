@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useGetPostsQuery } from '@/services/postApi';
 import type { RootState } from '@/store/store';
@@ -45,7 +45,7 @@ const PostListPage = () => {
                 className='flex items-center overflow-hidden border-b py-2'
               >
                 <div className='w-[calc(100%-220px)] flex-1 truncate'>
-                  {item.title}
+                  <Link to={`/posts/${item.id}`}>{item.title}</Link>
                 </div>
                 <div className='w-[100px] truncate text-center'>
                   {item.author}
