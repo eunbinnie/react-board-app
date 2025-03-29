@@ -1,5 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
+import type { PostItem } from '@/types/post.types';
+
 import baseQueryWithReauth from './baseQueryWithReauth';
 
 export const postApi = createApi({
@@ -13,7 +15,10 @@ export const postApi = createApi({
         body: postData,
       }),
     }),
+    getPosts: builder.query<PostItem[], void>({
+      query: () => '/posts',
+    }),
   }),
 });
 
-export const { useCreatePostMutation } = postApi;
+export const { useCreatePostMutation, useGetPostsQuery } = postApi;

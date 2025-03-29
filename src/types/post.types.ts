@@ -13,3 +13,12 @@ export interface PostInputProps {
   placeholder: string;
   register: UseFormRegister<Post>;
 }
+
+export interface PostItem {
+  author: string;
+  content: string;
+  created_at: string;
+  id: string;
+  title: string;
+  user_id: string;
+}

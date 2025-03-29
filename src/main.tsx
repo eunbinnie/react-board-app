@@ -13,6 +13,7 @@ import LoginPage from './pages/auth/Login.tsx';
 import SignUpPage from './pages/auth/SignUp.tsx';
 import HomePage from './pages/Home.tsx';
 import NewPostPage from './pages/posts/NewPost.tsx';
+import PostDetailPage from './pages/posts/PostDetail.tsx';
 import PostListPage from './pages/posts/Posts.tsx';
 import { store } from './store/store.ts';
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             <NewPostPage />
           </PrivateRoute>
         ),
+      },
+      {
+        path: '/posts/:id',
+        element: <PostDetailPage />,
       },
     ],
   },
