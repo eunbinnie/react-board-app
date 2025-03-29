@@ -1,7 +1,12 @@
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { useGetPostDetailQuery } from '@/services/postApi';
+import { TOAST_OPTION } from '@/constants/toast.constants';
+import {
+  useDeletePostMutation,
+  useGetPostDetailQuery,
+} from '@/services/postApi';
 import type { RootState } from '@/store/store';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -16,25 +21,49 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   dayjs.extend(utc);
   dayjs.extend(timezone);
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated,
+  const { isAuthenticated, user } = useSelector(
+    (state: RootState) => state.auth,
   );
   const { data, error } = useGetPostDetailQuery({ id });
+  const [deletePost, { isLoading }] = useDeletePostMutation();
+  const isAuthor = user?.id === data?.user_id;
 
   if (error) {
     console.error(error);
   }
 
+  const handleDeletePost = async () => {
+    try {
+      await deletePost({ id }).unwrap();
+      toast.success('게시글이 삭제되었습니다.', TOAST_OPTION);
+      navigate('/posts');
+    } catch (err) {
+      console.error('삭제 실패:', err);
+      toast.error('게시글 삭제에 실패했습니다.', TOAST_OPTION);
+    }
+  };
+
   return (
     <section className='mt-5 inline-block w-full'>
       <div className='mx-auto max-w-screen-lg'>
-        <button
-          onClick={() => navigate(-1)}
-          className='flex items-center text-sm leading-none text-gray-400'
-        >
-          <img src={ArrowLeft} alt='뒤로가기 아이콘' />
-          <span>뒤로가기</span>
-        </button>
+        <div className='flex items-center justify-between'>
+          <button
+            onClick={() => navigate(-1)}
+            className='flex items-center text-sm leading-none text-gray-400'
+          >
+            <img src={ArrowLeft} alt='뒤로가기 아이콘' />
+            <span>뒤로가기</span>
+          </button>
+          {isAuthor && (
+            <Button
+              onClick={handleDeletePost}
+              className='w-[100px]'
+              isLoading={isLoading}
+            >
+              삭제
+            </Button>
+          )}
+        </div>
         {isAuthenticated ? (
           <div className='mt-5 grid gap-8'>
             <div className='grid gap-6'>

@@ -23,6 +23,12 @@ export const postApi = createApi({
       query: ({ id }) => `/posts?id=eq.${id}`,
       transformResponse: (res: PostItem[]) => res[0],
     }),
+    deletePost: builder.mutation({
+      query: ({ id }) => ({
+        url: `/posts?id=eq.${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -30,4 +36,5 @@ export const {
   useCreatePostMutation,
   useGetPostsQuery,
   useGetPostDetailQuery,
+  useDeletePostMutation,
 } = postApi;

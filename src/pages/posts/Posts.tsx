@@ -27,8 +27,11 @@ const PostListPage = () => {
   return (
     <section className='mt-5 inline-block w-full'>
       <div className='mx-auto max-w-screen-lg'>
-        <div>
+        <div className='flex items-center justify-between'>
           <h3 className='text-2xl font-bold'>게시글 목록</h3>
+          <Button onClick={() => navigate('/posts/new')} className='w-fit'>
+            게시글 작성
+          </Button>
         </div>
         {isAuthenticated ? (
           <div className='mt-10 grid border-t border-gray-300'>
