@@ -2,14 +2,18 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import supabase from '@/utils/supabase';
 
-import type { LoginForm } from '@/types/auth.types';
+import type {
+  LoginForm,
+  LoginResponse,
+  SignupResponse,
+} from '@/types/auth.types';
 import { type SignUpForm } from '@/types/auth.types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => ({
-    signUp: builder.mutation<any, SignUpForm>({
+    signUp: builder.mutation<SignupResponse, SignUpForm>({
       async queryFn({ email, password }) {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) {
@@ -24,7 +28,7 @@ export const authApi = createApi({
         return { data };
       },
     }),
-    login: builder.mutation<any, LoginForm>({
+    login: builder.mutation<LoginResponse, LoginForm>({
       async queryFn({ email, password }) {
         const { data, error } = await supabase.auth.signInWithPassword({
           email,

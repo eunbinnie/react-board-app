@@ -1,3 +1,7 @@
+export const ACCESS_TOKEN = 'access_token';
+export const REFRESH_TOKEN = 'refresh_token';
+export const REFRESH_TOKEN_EXPIRES_IN = 60 * 60 * 24 * 14; // 2주
+
 export const SIGN_UP_ERROR_MESSAGE: Record<string, string> = {
   'User already registered': '이미 가입된 이메일입니다.',
   'Invalid email': '유효하지 않은 이메일 형식입니다.',

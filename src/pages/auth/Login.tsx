@@ -3,8 +3,14 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { LOGIN_ERROR_MESSAGE } from '@/constants/auth.constants';
+import {
+  ACCESS_TOKEN,
+  LOGIN_ERROR_MESSAGE,
+  REFRESH_TOKEN,
+  REFRESH_TOKEN_EXPIRES_IN,
+} from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
+import useAuthCookies from '@/hooks/useAuthCookies';
 import { useLoginMutation } from '@/services/authApi';
 
 import type { LoginForm } from '@/types/auth.types';
@@ -23,6 +29,7 @@ const LoginPage = () => {
   } = useForm<LoginForm>({ mode: 'onChange' });
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const { setCookies } = useAuthCookies();
 
   // 로그인 실패 처리
   const handleLoginError = (error: unknown) => {
@@ -43,7 +50,15 @@ const LoginPage = () => {
     try {
       const { session, user } = await login(formData).unwrap();
 
+      console.log(session, user);
+
       if (session && user) {
+        setCookies(ACCESS_TOKEN, session.access_token, session.expires_in);
+        setCookies(
+          REFRESH_TOKEN,
+          session.refresh_token,
+          REFRESH_TOKEN_EXPIRES_IN,
+        );
         navigate('/posts');
       }
     } catch (error) {
