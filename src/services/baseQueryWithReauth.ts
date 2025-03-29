@@ -12,7 +12,7 @@ import Cookies from 'js-cookie';
 import supabase from '@/utils/supabase';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_SUPABASE_URL,
+  baseUrl: `${import.meta.env.VITE_SUPABASE_URL}/rest/v1`,
   prepareHeaders: (headers) => {
     const token = Cookies.get(ACCESS_TOKEN);
     if (token) {
