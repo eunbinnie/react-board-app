@@ -22,3 +22,7 @@ export interface PostItem {
   title: string;
   user_id: string;
 }
+
+export interface GetPostDetail {
+  id?: string;
+}

@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import type { PostItem } from '@/types/post.types';
+import type { GetPostDetail } from '@/types/post.types';
+import { type PostItem } from '@/types/post.types';
 
 import baseQueryWithReauth from './baseQueryWithReauth';
 
@@ -18,7 +19,15 @@ export const postApi = createApi({
     getPosts: builder.query<PostItem[], void>({
       query: () => '/posts',
     }),
+    getPostDetail: builder.query<PostItem, GetPostDetail>({
+      query: ({ id }) => `/posts?id=eq.${id}`,
+      transformResponse: (res: PostItem[]) => res[0],
+    }),
   }),
 });
 
-export const { useCreatePostMutation, useGetPostsQuery } = postApi;
+export const {
+  useCreatePostMutation,
+  useGetPostsQuery,
+  useGetPostDetailQuery,
+} = postApi;
