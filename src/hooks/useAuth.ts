@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/auth.constants';
+
 import supabase from '@/utils/supabase';
 
 export default function useAuth() {
-  const [cookies] = useCookies(['access_token', 'refresh_token']);
+  const [cookies] = useCookies([ACCESS_TOKEN, REFRESH_TOKEN]);
 
   /**
    * 쿠키에서 토큰 꺼내서 supabase 세션 복원
@@ -14,8 +16,8 @@ export default function useAuth() {
   const useAuthSession = () => {
     useEffect(() => {
       const restoreSession = async () => {
-        const access_token = cookies['access_token'];
-        const refresh_token = cookies['refresh_token'];
+        const access_token = cookies[ACCESS_TOKEN];
+        const refresh_token = cookies[REFRESH_TOKEN];
 
         if (access_token && refresh_token) {
           try {

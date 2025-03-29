@@ -4,7 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
+  ACCESS_TOKEN,
   LOGIN_ERROR_MESSAGE,
+  REFRESH_TOKEN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
@@ -51,9 +53,9 @@ const LoginPage = () => {
       console.log(session, user);
 
       if (session && user) {
-        setCookies('access_token', session.access_token, session.expires_in);
+        setCookies(ACCESS_TOKEN, session.access_token, session.expires_in);
         setCookies(
-          'refresh_token',
+          REFRESH_TOKEN,
           session.refresh_token,
           REFRESH_TOKEN_EXPIRES_IN,
         );

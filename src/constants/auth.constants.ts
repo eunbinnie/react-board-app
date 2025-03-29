@@ -1,3 +1,5 @@
+export const ACCESS_TOKEN = 'access_token';
+export const REFRESH_TOKEN = 'refresh_token';
 export const REFRESH_TOKEN_EXPIRES_IN = 60 * 60 * 24 * 14; // 2주
 
 export const SIGN_UP_ERROR_MESSAGE: Record<string, string> = {
