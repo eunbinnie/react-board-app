@@ -3,8 +3,15 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { SIGN_UP_ERROR_MESSAGE } from '@/constants/auth.constants';
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  REFRESH_TOKEN_EXPIRES_IN,
+  SIGN_UP_ERROR_MESSAGE,
+} from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
+import useAuth from '@/hooks/useAuth';
+import useAuthCookies from '@/hooks/useAuthCookies';
 import { useSignUpMutation } from '@/services/authApi';
 
 import type { SignUpForm } from '@/types/auth.types';
@@ -23,6 +30,8 @@ const SignUpPage = () => {
   } = useForm<SignUpForm>({ mode: 'onChange' });
   const [signUp, { isLoading }] = useSignUpMutation();
   const navigate = useNavigate();
+  const { setCookies } = useAuthCookies();
+  const { saveUserToStore } = useAuth();
 
   // 회원가입 실패 처리
   const handleSignupError = (error: unknown) => {
@@ -45,6 +54,15 @@ const SignUpPage = () => {
       const { session, user } = await signUp(formData).unwrap();
 
       if (session && user) {
+        setCookies(ACCESS_TOKEN, session.access_token, session.expires_in);
+        setCookies(
+          REFRESH_TOKEN,
+          session.refresh_token,
+          REFRESH_TOKEN_EXPIRES_IN,
+        );
+
+        // 유저 정보 저장
+        saveUserToStore({ id: user.id, email: user.email! });
         toast.success('회원가입이 완료되었습니다!', TOAST_OPTION);
         navigate('/posts');
       }

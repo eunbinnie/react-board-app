@@ -26,9 +26,11 @@ export interface AuthFormInputProps<T extends Record<string, any>> {
   name: Path<T>;
 }
 
+// 회원가입 응답 타입
 export type SignupResponse = {
   user: User | null;
   session: Session | null;
 };
 
+// 로그인 응답 타입
 export type LoginResponse = SignupResponse;

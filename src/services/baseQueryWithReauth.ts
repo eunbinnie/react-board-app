@@ -3,6 +3,8 @@ import {
   REFRESH_TOKEN,
   REFRESH_TOKEN_EXPIRES_IN,
 } from '@/constants/auth.constants';
+import { clearAuthUser } from '@/store/authSlice';
+import { store } from '@/store/store';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import Cookies from 'js-cookie';
@@ -50,6 +52,7 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
       console.error('Failed to refresh session');
       Cookies.remove(ACCESS_TOKEN);
       Cookies.remove(REFRESH_TOKEN);
+      store.dispatch(clearAuthUser());
       window.location.href = '/login';
     }
   }

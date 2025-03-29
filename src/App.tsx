@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
+import Header from './components/common/Header';
 import useAuth from './hooks/useAuth';
 
 const App = () => {
@@ -7,9 +8,12 @@ const App = () => {
   useAuthSession(); // supabase 세션 복원
 
   return (
-    <main>
-      <Outlet />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ import {
   REFRESH_TOKEN_EXPIRES_IN,
 } from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
+import useAuth from '@/hooks/useAuth';
 import useAuthCookies from '@/hooks/useAuthCookies';
 import { useLoginMutation } from '@/services/authApi';
 
@@ -30,6 +31,7 @@ const LoginPage = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
   const { setCookies } = useAuthCookies();
+  const { saveUserToStore } = useAuth();
 
   // 로그인 실패 처리
   const handleLoginError = (error: unknown) => {
@@ -50,8 +52,6 @@ const LoginPage = () => {
     try {
       const { session, user } = await login(formData).unwrap();
 
-      console.log(session, user);
-
       if (session && user) {
         setCookies(ACCESS_TOKEN, session.access_token, session.expires_in);
         setCookies(
@@ -59,6 +59,9 @@ const LoginPage = () => {
           session.refresh_token,
           REFRESH_TOKEN_EXPIRES_IN,
         );
+
+        // 유저 정보 저장
+        saveUserToStore({ id: user.id, email: user.email! });
         navigate('/posts');
       }
     } catch (error) {
