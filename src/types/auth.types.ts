@@ -1,5 +1,7 @@
 import type { FieldErrors, Path, UseFormRegister } from 'react-hook-form';
 
+import type { Session, User } from '@supabase/supabase-js';
+
 // 인증 관련 폼에서 공통으로 사용하는 필드 (로그인, 회원가입 모두 사용)
 export type AuthFormFields = {
   email: string;
@@ -23,3 +25,10 @@ export interface AuthFormInputProps<T extends Record<string, any>> {
   errors: FieldErrors<T>;
   name: Path<T>;
 }
+
+export type SignupResponse = {
+  user: User | null;
+  session: Session | null;
+};
+
+export type LoginResponse = SignupResponse;

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import { LOGIN_ERROR_MESSAGE } from '@/constants/auth.constants';
 import { TOAST_OPTION } from '@/constants/toast.constants';
+import useAuthCookies from '@/hooks/useAuthCookies';
 import { useLoginMutation } from '@/services/authApi';
 
 import type { LoginForm } from '@/types/auth.types';
@@ -23,6 +24,7 @@ const LoginPage = () => {
   } = useForm<LoginForm>({ mode: 'onChange' });
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const { setCookies } = useAuthCookies();
 
   // 로그인 실패 처리
   const handleLoginError = (error: unknown) => {
@@ -43,7 +45,11 @@ const LoginPage = () => {
     try {
       const { session, user } = await login(formData).unwrap();
 
+      console.log(session, user);
+
       if (session && user) {
+        setCookies('access_token', session.access_token, session.expires_in);
+        setCookies('refresh_token', session.refresh_token);
         navigate('/posts');
       }
     } catch (error) {
