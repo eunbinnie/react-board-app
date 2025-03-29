@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <div className='px-4 md:px-6 lg:px-8'>
-      <header className='mx-auto flex h-full min-h-[60px] w-full max-w-[1400px] flex-wrap items-center justify-between md:min-h-20'>
+      <header className='mx-auto flex h-full min-h-[60px] w-full max-w-[1400px] flex-wrap items-center justify-between gap-x-1 md:min-h-20'>
         <div className='flex items-center gap-4'>
           <h1>
             <Link to={'/'} className='font-bold'>
