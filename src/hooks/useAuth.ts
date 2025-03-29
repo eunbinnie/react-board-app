@@ -22,6 +22,7 @@ export default function useAuth() {
       const restoreSession = async () => {
         const access_token = cookies[ACCESS_TOKEN];
         const refresh_token = cookies[REFRESH_TOKEN];
+        console.log(access_token, refresh_token, 1);
 
         if (access_token && refresh_token) {
           try {
@@ -29,6 +30,13 @@ export default function useAuth() {
               access_token,
               refresh_token,
             });
+            console.log(2);
+
+            const {
+              data: { user },
+            } = await supabase.auth.getUser();
+
+            console.log(user, 'useruser');
           } catch (error) {
             console.error('세션 복구 실패', error);
           }
