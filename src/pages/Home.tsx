@@ -1,21 +1,27 @@
-import { useId } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import Button from '@/components/button/Button';
-import Input from '@/components/input/Input';
-import InputWrapper from '@/components/input/InputWrapper';
+import animationData from '@/assets/lottie/new-post.json';
+import type { RootState } from '@/store/store';
+import Lottie from 'lottie-react';
 
 const HomePage = () => {
-  const passwordId = useId();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
 
   return (
-    <main className='mx-auto my-10 px-8'>
-      <InputWrapper label='비밀번호' htmlFor={passwordId}>
-        <Input id={passwordId} type='password' />
-      </InputWrapper>
-      <Button disabled={false} isLoading>
-        버튼
-      </Button>
-    </main>
+    <div className='flex flex-col items-center md:pt-20'>
+      <div className='flex aspect-square w-[200px]'>
+        <Lottie animationData={animationData} loop={false} />
+      </div>
+      <Link
+        to={'/posts/new'}
+        className='rounded-xl px-4 py-2 font-medium hover:bg-gray-100'
+      >
+        {isAuthenticated ? '게시글 작성하기' : '로그인하고 게시글 작성하기'}
+      </Link>
+    </div>
   );
 };
 
