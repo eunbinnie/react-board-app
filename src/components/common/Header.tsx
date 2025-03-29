@@ -26,7 +26,7 @@ const Header = () => {
         <div className='flex items-center gap-4'>
           <h1>
             <Link to={'/'} className='font-bold'>
-              Home
+              HOME
             </Link>
           </h1>
           <Link to={'/posts'} className='font-medium'>

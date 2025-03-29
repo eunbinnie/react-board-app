@@ -7,9 +7,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import App from './App.tsx';
+import PrivateRoute from './components/route/PrivateRoute.tsx';
+import PublicRoute from './components/route/PublicRoute.tsx';
 import LoginPage from './pages/auth/Login.tsx';
 import SignUpPage from './pages/auth/SignUp.tsx';
 import HomePage from './pages/Home.tsx';
+import NewPostPage from './pages/posts/NewPost.tsx';
 import PostListPage from './pages/posts/Posts.tsx';
 import { store } from './store/store.ts';
 
@@ -20,15 +23,31 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: '/posts', element: <PostListPage /> },
+      {
+        path: '/posts/new',
+        element: (
+          <PrivateRoute>
+            <NewPostPage />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
     path: '/signup',
-    element: <SignUpPage />,
+    element: (
+      <PublicRoute>
+        <SignUpPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '/login',
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
 ]);
 

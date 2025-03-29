@@ -1,15 +1,20 @@
 import type { PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 
+import useAuth from '@/hooks/useAuth';
+
 interface IAuthLayoutProps extends PropsWithChildren {}
 
 const AuthLayout = ({ children }: IAuthLayoutProps) => {
+  const { useAuthSession } = useAuth();
+  useAuthSession(); // supabase 세션 복원
+
   return (
     <div className='flex min-h-dvh'>
       <div className='hidden bg-slate-950 p-10 lg:block lg:flex-1'>
         <h1>
           <Link to='/' className='text-2xl font-bold text-white'>
-            이사대학
+            HOME
           </Link>
         </h1>
       </div>
