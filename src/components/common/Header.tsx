@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import type { RootState } from '@/store/store';
 
 const Header = () => {
-  // const user = useSelector((state: RootState) => state.auth.user);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
