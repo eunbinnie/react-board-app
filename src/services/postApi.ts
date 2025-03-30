@@ -19,6 +19,9 @@ export const postApi = createApi({
     getPosts: builder.query<PostItem[], void>({
       query: () => '/posts',
     }),
+    getPostsByKeyword: builder.query<PostItem[], string>({
+      query: (keyword) => `/posts?title=ilike.*${keyword}*`, // 대소문자 무시
+    }),
     getPostDetail: builder.query<PostItem, GetPostDetail>({
       query: ({ id }) => `/posts?id=eq.${id}`,
       transformResponse: (res: PostItem[]) => res[0],
@@ -36,5 +39,6 @@ export const {
   useCreatePostMutation,
   useGetPostsQuery,
   useGetPostDetailQuery,
+  useGetPostsByKeywordQuery,
   useDeletePostMutation,
 } = postApi;

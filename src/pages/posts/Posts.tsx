@@ -8,6 +8,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import Button from '@/components/button/Button';
+import SearchSortBox from '@/components/post/SearchSortBox';
 
 const PostListPage = () => {
   dayjs.extend(utc);
@@ -35,6 +36,7 @@ const PostListPage = () => {
             </Button>
           )}
         </div>
+        {isAuthenticated && <SearchSortBox />}
         {isAuthenticated ? (
           <div className='mt-10 grid border-t border-gray-300'>
             <div className='flex items-center border-b py-2'>

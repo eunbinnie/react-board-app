@@ -1,5 +1,7 @@
 import { forwardRef, useCallback, useState } from 'react';
 
+import SearchIcon from '@/assets/icons/ic-search';
+
 import { cn } from '@/utils/cn';
 
 import VisibilityOff from '/icons/visibility-off.svg';
@@ -7,15 +9,17 @@ import VisibilityOn from '/icons/visibility-on.svg';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
+  isSearch?: boolean;
 }
 
 /**
  * input 공통 컴포넌트
  * @param type input type
  * @param className input 커스텀 className
+ * @param isSearch 검색 input 여부
  */
 export default forwardRef(function Input(
-  { type, id, placeholder, className, ...rest }: InputProps,
+  { type, id, placeholder, className, isSearch, ...rest }: InputProps,
   ref: React.ForwardedRef<HTMLInputElement>,
 ) {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +34,11 @@ export default forwardRef(function Input(
   return (
     <div className='grid'>
       <div className='relative'>
+        {isSearch && (
+          <button className='absolute left-3 top-1/2 -translate-y-1/2'>
+            <SearchIcon />
+          </button>
+        )}
         <input
           id={id}
           type={newType}
@@ -38,6 +47,7 @@ export default forwardRef(function Input(
             'h-9 w-full rounded-md border border-gray-500 px-3 py-1 text-sm leading-[1.6] text-black outline-none placeholder:text-gray-500',
             'focus-visible:ring-1 focus-visible:ring-gray-300',
             isPassword ? 'pr-[42px]' : 'pr-3',
+            isSearch && 'pl-[42px]',
             className,
           )}
           ref={ref}
