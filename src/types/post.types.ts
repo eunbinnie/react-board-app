@@ -26,3 +26,7 @@ export interface PostItem {
 export interface GetPostDetail {
   id?: string;
 }
+
+export interface PostStoreItem {
+  data: PostItem[];
+}

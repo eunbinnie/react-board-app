@@ -1,7 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useGetPostsQuery } from '@/services/postApi';
+import { setPosts } from '@/store/postSlice';
 import type { RootState } from '@/store/store';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -13,6 +15,8 @@ import SearchSortBox from '@/components/post/SearchSortBox';
 const PostListPage = () => {
   dayjs.extend(utc);
   dayjs.extend(timezone);
+  const dispatch = useDispatch();
+  const postData = useSelector((state: RootState) => state.post.data);
   const navigate = useNavigate();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
@@ -24,6 +28,10 @@ const PostListPage = () => {
   if (error) {
     console.error(error);
   }
+
+  useEffect(() => {
+    dispatch(setPosts(data || []));
+  }, [data]);
 
   return (
     <section className='mt-5 inline-block w-full'>
@@ -46,22 +54,30 @@ const PostListPage = () => {
               <div className='w-[100px] truncate text-center'>작성자</div>
               <div className='w-[120px] text-center'>작성일</div>
             </div>
-            {data?.map((item) => (
-              <div
-                key={item.id}
-                className='flex items-center overflow-hidden border-b py-2'
-              >
-                <div className='w-[calc(100%-220px)] flex-1 truncate'>
-                  <Link to={`/posts/${item.id}`}>{item.title}</Link>
+            {postData.length !== 0 ? (
+              postData?.map((item) => (
+                <div
+                  key={item.id}
+                  className='flex items-center overflow-hidden border-b py-2'
+                >
+                  <div className='w-[calc(100%-220px)] flex-1 truncate'>
+                    <Link to={`/posts/${item.id}`}>{item.title}</Link>
+                  </div>
+                  <div className='w-[100px] truncate text-center'>
+                    {item.author}
+                  </div>
+                  <div className='w-[120px] text-center'>
+                    {dayjs(item.created_at)
+                      .tz('Asia/Seoul')
+                      .format('YYYY-MM-DD')}
+                  </div>
                 </div>
-                <div className='w-[100px] truncate text-center'>
-                  {item.author}
-                </div>
-                <div className='w-[120px] text-center'>
-                  {dayjs(item.created_at).tz('Asia/Seoul').format('YYYY-MM-DD')}
-                </div>
+              ))
+            ) : (
+              <div className='mt-[60px] text-center text-gray-500'>
+                게시글이 없습니다.
               </div>
-            ))}
+            )}
           </div>
         ) : (
           <div className='mt-[200px] flex flex-col items-center gap-6'>
