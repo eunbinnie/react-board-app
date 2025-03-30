@@ -15,8 +15,8 @@ const Header = () => {
   const email = user?.email;
 
   const handleLogout = () => {
-    removeCookie(ACCESS_TOKEN);
-    removeCookie(REFRESH_TOKEN);
+    removeCookie(ACCESS_TOKEN, { path: '/' });
+    removeCookie(REFRESH_TOKEN, { path: '/' });
     store.dispatch(clearAuthUser());
   };
 
