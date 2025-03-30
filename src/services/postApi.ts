@@ -22,14 +22,17 @@ export const postApi = createApi({
     getPosts: builder.query<PostItem[], GetPostsParams | void>({
       query: (params) => {
         const keyword = params?.keyword || '';
-        const sort = params?.sort || 'created_at.desc';
+        const sort = encodeURIComponent(params?.sort || 'created_at.desc');
 
         const searchQuery = keyword
           ? `title=ilike.*${encodeURIComponent(keyword)}*&`
           : '';
 
-        return `/posts?${searchQuery}order=${sort}`;
+        return {
+          url: `/posts?${searchQuery}order=${sort}`,
+        };
       },
+      keepUnusedDataFor: 0,
     }),
 
     // 게시글 상세 조회 API
