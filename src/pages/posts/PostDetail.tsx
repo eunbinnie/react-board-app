@@ -48,8 +48,10 @@ const PostDetailPage = () => {
               onClick={() => navigate(-1)}
               className='flex items-center text-sm leading-none text-gray-400'
             >
-              <ArrowLeftIcon />
-              <span>뒤로가기</span>
+              <div className='size-5'>
+                <ArrowLeftIcon />
+              </div>
+              <span className='whitespace-nowrap'>뒤로가기</span>
             </button>
             {isAuthor && (
               <Button

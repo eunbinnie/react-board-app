@@ -34,7 +34,7 @@ export default forwardRef(function Input(
     <div className='grid'>
       <div className='relative'>
         {isSearch && (
-          <button className='absolute left-3 top-1/2 -translate-y-1/2'>
+          <button className='absolute left-3 top-1/2 aspect-[22/23] w-5 -translate-y-1/2'>
             <SearchIcon />
           </button>
         )}
@@ -55,7 +55,7 @@ export default forwardRef(function Input(
         {isPassword && (
           <button
             type='button'
-            className='absolute right-3 top-1/2 -translate-y-1/2'
+            className='absolute right-3 top-1/2 size-5 -translate-y-1/2'
             onClick={handlePasswordToggle}
             aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
           >
