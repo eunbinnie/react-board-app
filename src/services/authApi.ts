@@ -9,6 +9,11 @@ import type {
 } from '@/types/auth.types';
 import { type SignUpForm } from '@/types/auth.types';
 
+/**
+ * 인증 API
+ * @property signUp - 회원가입
+ * @property login - 로그인
+ */
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fakeBaseQuery(),

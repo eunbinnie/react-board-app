@@ -2,36 +2,29 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import useKRTime from '@/hooks/useKRTime';
 import { useGetPostsQuery } from '@/services/postApi';
 import { setPosts } from '@/store/postSlice';
 import type { RootState } from '@/store/store';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 
 import Button from '@/components/button/Button';
 import SearchSortBox from '@/components/post/SearchSortBox';
 
 const PostListPage = () => {
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  const dispatch = useDispatch();
-  const postData = useSelector((state: RootState) => state.post.data);
+  const { format } = useKRTime();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const postListData = useSelector((state: RootState) => state.post.data); // 게시글 목록 데이터
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated,
-  );
-  const { data, error } = useGetPostsQuery(undefined, {
+  ); // 인증 상태 조회
+  const { data } = useGetPostsQuery(undefined, {
     refetchOnMountOrArgChange: true,
-  });
-
-  if (error) {
-    console.error(error);
-  }
+  }); // 게시글 목록 조회 API
 
   useEffect(() => {
     dispatch(setPosts(data || []));
-  }, [data]);
+  }, [dispatch, data]);
 
   return (
     <section className='mt-5 inline-block w-full'>
@@ -54,8 +47,8 @@ const PostListPage = () => {
               <div className='w-[100px] truncate text-center'>작성자</div>
               <div className='w-[120px] text-center'>작성일</div>
             </div>
-            {postData.length !== 0 ? (
-              postData?.map((item) => (
+            {postListData.length !== 0 ? (
+              postListData?.map((item) => (
                 <div
                   key={item.id}
                   className='flex items-center overflow-hidden border-b py-2'
@@ -67,9 +60,7 @@ const PostListPage = () => {
                     {item.author}
                   </div>
                   <div className='w-[120px] text-center'>
-                    {dayjs(item.created_at)
-                      .tz('Asia/Seoul')
-                      .format('YYYY-MM-DD')}
+                    {format(item.created_at)}
                   </div>
                 </div>
               ))

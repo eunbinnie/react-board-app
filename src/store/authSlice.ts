@@ -3,6 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { AuthState, User } from '@/types/user.types';
 
+/**
+ * 인증 상태 초기값
+ * @property user - 인증 사용자 정보
+ * @property isAuthenticated - 인증 상태
+ */
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,

@@ -1,6 +1,9 @@
 import { useCookies } from 'react-cookie';
 
-export default function useAuthCookies() {
+/**
+ * 인증 쿠키 관리
+ */
+const useAuthCookies = () => {
   const [, setCookie] = useCookies();
 
   const setCookies = (key: string, value: string, maxAge: number) => {
@@ -12,4 +15,6 @@ export default function useAuthCookies() {
   };
 
   return { setCookies };
-}
+};
+
+export default useAuthCookies;

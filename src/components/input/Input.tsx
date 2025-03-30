@@ -1,11 +1,10 @@
 import { forwardRef, useCallback, useState } from 'react';
 
 import SearchIcon from '@/assets/icons/ic-search';
+import VisibilityOffIcon from '@/assets/icons/ic-visibility-off';
+import VisibilityOnIcon from '@/assets/icons/ic-visibility-on';
 
 import { cn } from '@/utils/cn';
-
-import VisibilityOff from '/icons/visibility-off.svg';
-import VisibilityOn from '/icons/visibility-on.svg';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -60,10 +59,7 @@ export default forwardRef(function Input(
             onClick={handlePasswordToggle}
             aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
           >
-            <img
-              src={showPassword ? VisibilityOn : VisibilityOff}
-              alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-            />
+            {showPassword ? <VisibilityOnIcon /> : <VisibilityOffIcon />}
           </button>
         )}
       </div>

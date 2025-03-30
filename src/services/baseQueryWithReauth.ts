@@ -7,6 +7,9 @@ import Cookies from 'js-cookie';
 
 import supabase from '@/utils/supabase';
 
+/**
+ * 헤더 토큰 삽입 베이스 쿼리 함수
+ */
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SUPABASE_URL}/rest/v1`,
   prepareHeaders: (headers) => {
@@ -25,28 +28,30 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+/**
+ * 토큰 갱신 쿼리 함수
+ */
 const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
     console.warn('access token 만료, refresh 시도');
-    // try to get a new token
+    // 토큰 확인 후 재발급급
     const { data } = await supabase.auth.refreshSession();
     if (data.session) {
-      // store the new token
       const { access_token, refresh_token, expires_in } = data.session;
 
-      // 옵션 객체를 명시적으로 생성
-      const accessTokenOptions = {
+      const baseTokenOptions = {
         path: '/',
         secure: true,
+      };
+
+      const accessTokenOptions = {
+        ...baseTokenOptions,
         maxAge: expires_in,
       };
 
-      const refreshTokenOptions = {
-        path: '/',
-        secure: true,
-      };
+      const refreshTokenOptions = baseTokenOptions;
 
       // 엑세스 토큰 저장
       Cookies.set(ACCESS_TOKEN, String(access_token), accessTokenOptions);

@@ -13,7 +13,10 @@ import supabase from '@/utils/supabase';
 
 import type { User } from '@/types/user.types';
 
-export default function useAuth() {
+/**
+ * 인증 관리
+ */
+const useAuth = () => {
   const dispatch = useDispatch();
   const [cookies, setCookies] = useCookies([ACCESS_TOKEN, REFRESH_TOKEN]);
 
@@ -90,4 +93,6 @@ export default function useAuth() {
   };
 
   return { useAuthSession, saveUserToStore };
-}
+};
+
+export default useAuth;

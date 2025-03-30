@@ -3,38 +3,31 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import ArrowLeftIcon from '@/assets/icons/ic-arrow-left';
 import { TOAST_OPTION } from '@/constants/toast.constants';
+import useKRTime from '@/hooks/useKRTime';
 import {
   useDeletePostMutation,
   useGetPostDetailQuery,
 } from '@/services/postApi';
 import type { RootState } from '@/store/store';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 
 import Button from '@/components/button/Button';
 import Modal from '@/components/modal/Modal';
 
-import ArrowLeft from '/icons/arrow-left.svg';
-
 const PostDetailPage = () => {
+  const { format } = useKRTime();
   const { id } = useParams();
   const navigate = useNavigate();
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth,
-  );
-  const { data, error } = useGetPostDetailQuery({ id });
-  const [deletePost, { isLoading }] = useDeletePostMutation();
-  const isAuthor = user?.id === data?.user_id;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  ); // 인증 상태 조회
+  const { data } = useGetPostDetailQuery({ id }); // 게시글 상세 조회 API
+  const [deletePost, { isLoading }] = useDeletePostMutation(); // 게시글 삭제 API
+  const isAuthor = user?.id === data?.user_id; // 작성자 여부 확인
+  const [isModalOpen, setIsModalOpen] = useState(false); // 삭제 여부 확인 모달 상태
 
-  if (error) {
-    console.error(error);
-  }
-
+  // 게시글 삭제 함수
   const handleDeletePost = async () => {
     try {
       await deletePost({ id }).unwrap();
@@ -55,7 +48,7 @@ const PostDetailPage = () => {
               onClick={() => navigate(-1)}
               className='flex items-center text-sm leading-none text-gray-400'
             >
-              <img src={ArrowLeft} alt='뒤로가기 아이콘' />
+              <ArrowLeftIcon />
               <span>뒤로가기</span>
             </button>
             {isAuthor && (
@@ -74,11 +67,7 @@ const PostDetailPage = () => {
                 <h3 className='text-3xl font-bold'>{data?.title}</h3>
                 <div className='flex items-center gap-3 text-sm text-gray-500'>
                   <span>{data?.author}</span>
-                  <span>
-                    {dayjs(data?.created_at)
-                      .tz('Asia/Seoul')
-                      .format('YYYY-MM-DD')}
-                  </span>
+                  <span>{format(data?.created_at)}</span>
                 </div>
               </div>
               <p className='whitespace-pre-line'>{data?.content}</p>
