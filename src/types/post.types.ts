@@ -1,5 +1,10 @@
 import type { UseFormRegister } from 'react-hook-form';
 
+export interface GetPostsParams {
+  keyword?: string;
+  sort?: string;
+}
+
 export interface Post {
   title: string;
   content: string;
