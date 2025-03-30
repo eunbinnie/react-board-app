@@ -18,7 +18,7 @@ const NewPostPage = () => {
     handleSubmit,
     formState: { isValid },
   } = useForm<Post>({ mode: 'onChange' });
-  const [createPost, { isLoading }] = useCreatePostMutation();
+  const [createPost, { isLoading }] = useCreatePostMutation(); // 게시글 작성 API
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Post> = async (formData) => {
