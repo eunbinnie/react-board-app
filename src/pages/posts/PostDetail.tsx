@@ -53,7 +53,7 @@ const PostDetailPage = () => {
               </div>
               <span className='whitespace-nowrap'>뒤로가기</span>
             </button>
-            {isAuthor && (
+            {isAuthenticated && isAuthor && (
               <Button
                 onClick={() => setIsModalOpen(true)}
                 className='w-[100px]'
