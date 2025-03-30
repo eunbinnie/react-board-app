@@ -17,7 +17,12 @@ const SearchSortBox = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [keyword, setKeyword] = useState<string>('');
   const [sortId, setSortId] = useState<string>('created_at.desc');
-  const { data } = useGetPostsQuery({ keyword, sort: sortId });
+  const { data } = useGetPostsQuery(
+    { keyword, sort: sortId },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   const handleSearchKeyword: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -30,7 +35,7 @@ const SearchSortBox = () => {
 
   useEffect(() => {
     dispatch(setPosts(data || []));
-  }, [data]);
+  }, [data, dispatch]);
 
   return (
     <div className='mt-3 flex items-center justify-end gap-2'>
