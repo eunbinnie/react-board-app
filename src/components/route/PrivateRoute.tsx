@@ -9,8 +9,9 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/auth.constants';
  */
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([ACCESS_TOKEN, REFRESH_TOKEN]);
+  const isAuth = cookies[ACCESS_TOKEN] || cookies[REFRESH_TOKEN];
 
-  return cookies ? <>{children}</> : <Navigate to={'/login'} replace />;
+  return isAuth ? <>{children}</> : <Navigate to={'/login'} replace />;
 };
 
 export default PrivateRoute;

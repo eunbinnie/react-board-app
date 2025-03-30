@@ -9,8 +9,9 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/auth.constants';
  */
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const [cookies] = useCookies([ACCESS_TOKEN, REFRESH_TOKEN]);
+  const isAuth = cookies[ACCESS_TOKEN] || cookies[REFRESH_TOKEN];
 
-  return cookies ? <Navigate to={'/'} replace /> : <>{children}</>;
+  return isAuth ? <Navigate to={'/'} replace /> : <>{children}</>;
 };
 
 export default PublicRoute;
