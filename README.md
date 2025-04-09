@@ -1,8 +1,6 @@
-# 이사대학 프론트엔드 과제
-
 ## 📋 프로젝트 주소
 
-[이사대학 기술 과제 프로젝트 배포 사이트](https://react-board-app.vercel.app/)
+[배포 사이트](https://react-board-app.vercel.app/)
 
 ## 🧰 기술 스택
 
